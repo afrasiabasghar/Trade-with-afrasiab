@@ -3,535 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trade with Afrasiab — Admin Panel</title>
+<title>Trade with Afrasiab — Client Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0c10;--surface:#111318;--surface2:#181c24;--surface3:#1e2330;--border:#252b38;--border2:#2e3548;--accent:#00e5ff;--accent2:#7c3aed;--accent3:#10b981;--danger:#ef4444;--warn:#f59e0b;--text:#e8eaf0;--text2:#8892a4;--text3:#4a5568;--profit:#10b981;--loss:#ef4444;}
+:root{
+  --bg:#06080d;--surface:#0d1117;--surface2:#141920;--surface3:#1a2030;
+  --border:#1e2635;--border2:#252e40;--accent:#00e5ff;--accent2:#7c3aed;
+  --accent3:#10b981;--danger:#ef4444;--warn:#f59e0b;
+  --text:#dde3ef;--text2:#7a8599;--text3:#3d4a5f;--profit:#10b981;--loss:#ef4444;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-text-size-adjust:100%;}
 
-/* LOGIN */
-#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;background-image:radial-gradient(ellipse at 20% 50%,rgba(0,229,255,.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(124,58,237,.05) 0%,transparent 60%);}
-.login-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:48px 40px;width:420px;box-shadow:0 0 60px rgba(0,229,255,.06),0 32px 64px rgba(0,0,0,.5);}
-.login-logo{text-align:center;margin-bottom:36px;}
-.login-logo .mark{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.login-logo p{color:var(--text2);font-size:13px;margin-top:6px;letter-spacing:.05em;text-transform:uppercase;}
-.fg{margin-bottom:20px;}
-.fg label{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.fg input,.fg select{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s;}
-.fg input:focus,.fg select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.1);}
-.fg input[readonly]{background:var(--surface3);color:var(--text2);}
-.fg select option{background:var(--surface2);}
-.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#0099bb);color:#000;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;letter-spacing:.05em;}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,229,255,.3);}
-#loginError{color:var(--danger);font-size:13px;text-align:center;margin-top:12px;display:none;}
+/* ─── LOGIN PAGE ─── */
+#loginPage{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse 60% 50% at 10% 60%,rgba(0,229,255,.05) 0%,transparent 70%),
+                   radial-gradient(ellipse 50% 40% at 90% 30%,rgba(124,58,237,.06) 0%,transparent 70%);
+}
+.login-wrap{width:100%;max-width:400px;}
+.login-brand{text-align:center;margin-bottom:32px;}
+.login-brand .wordmark{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(22px,6vw,30px);
+  letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--accent) 0%,#60a5fa 60%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.login-brand .tagline{font-size:12px;color:var(--text2);letter-spacing:.12em;text-transform:uppercase;margin-top:6px;}
+.login-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:clamp(24px,5vw,40px);box-shadow:0 0 80px rgba(0,0,0,.5),0 0 40px rgba(0,229,255,.04);}
+.login-card h2{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:4px;}
+.login-card .sub{color:var(--text2);font-size:13px;margin-bottom:24px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px;}
+.fg input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-size:15px;outline:none;transition:border .2s;-webkit-appearance:none;}
+.fg input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.08);}
+.btn-login{
+  width:100%;padding:14px;margin-top:6px;
+  background:linear-gradient(135deg,var(--accent) 0%,#0099bb 100%);
+  color:#000;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;
+  border:none;border-radius:10px;cursor:pointer;transition:all .2s;
+  -webkit-appearance:none;touch-action:manipulation;
+}
+.btn-login:active{transform:scale(.98);}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;}
+.login-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--danger);padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none;text-align:center;}
+.no-signup{text-align:center;margin-top:16px;font-size:12px;color:var(--text3);}
 
-/* SHELL */
-#appShell{display:none;height:100vh;overflow:hidden;}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;}
-.sb-brand{padding:22px 20px 18px;border-bottom:1px solid var(--border);}
-.sb-brand .mark{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3;}
-.sb-brand .sub{font-size:11px;color:var(--text3);margin-top:3px;letter-spacing:.08em;text-transform:uppercase;}
-.nav-sec{padding:14px 12px 6px;}
-.nav-sec-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:0 8px;margin-bottom:6px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .15s;color:var(--text2);font-size:14px;font-weight:500;margin-bottom:2px;border:1px solid transparent;}
-.nav-item:hover{background:var(--surface2);color:var(--text);}
-.nav-item.active{background:rgba(0,229,255,.1);color:var(--accent);border-color:rgba(0,229,255,.15);}
-.nav-item svg{width:16px;height:16px;flex-shrink:0;}
-.sb-footer{margin-top:auto;padding:16px 12px;border-top:1px solid var(--border);}
-.admin-badge{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border2);}
-.admin-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#000;}
-.admin-info .name{font-size:13px;font-weight:600;}
-.admin-info .role{font-size:11px;color:var(--text3);}
-.logout-btn{width:100%;margin-top:8px;padding:9px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:13px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;}
-.logout-btn:hover{border-color:var(--danger);color:var(--danger);}
+/* ─── PORTAL ─── */
+#portal{display:none;min-height:100vh;}
 
-.main-content{margin-left:240px;height:100vh;overflow-y:auto;background:var(--bg);}
-.topbar{position:sticky;top:0;background:rgba(10,12,16,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;z-index:50;}
-.page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;}
-.page-sub{font-size:13px;color:var(--text2);margin-top:2px;}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 8px var(--accent3);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.status-lbl{font-size:12px;color:var(--text2);}
-.content-area{padding:32px;}
-.view{display:none;}.view.active{display:block;}
+/* HEADER */
+.hdr{
+  background:rgba(13,17,23,.94);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);
+}
+.hdr-inner{
+  max-width:1200px;margin:0 auto;padding:0 16px;
+  height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.hdr-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(13px,3.5vw,18px);
+  background:linear-gradient(135deg,var(--accent),#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;flex-shrink:0;
+}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.live-pill{
+  display:flex;align-items:center;gap:5px;font-size:11px;color:var(--accent3);
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);
+  padding:4px 9px;border-radius:20px;white-space:nowrap;
+}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--accent3);animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.user-chip{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:30px;padding:4px 10px 4px 5px;}
+.user-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:#000;flex-shrink:0;}
+.user-name{font-size:12px;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-out{padding:6px 12px;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:8px;font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap;touch-action:manipulation;}
+.btn-out:active{border-color:var(--danger);color:var(--danger);}
 
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);}
-.stat-lbl{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
-.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;margin-top:8px;}
-.stat-sub{font-size:12px;color:var(--text3);margin-top:4px;}
+/* BODY */
+.portal-body{max-width:1200px;margin:0 auto;padding:20px 16px 40px;}
 
-/* CARD */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;}
-.card-hdr{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
-.card-body{padding:24px;}
+/* ── PROFILE CARD ── */
+.profile-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:clamp(16px,4vw,28px);margin-bottom:20px;position:relative;overflow:hidden;
+}
+.profile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap;}
-.btn-accent{background:var(--accent);color:#000;}.btn-accent:hover{background:#00ccee;transform:translateY(-1px);}
-.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2);}.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
-.btn-danger{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--danger);}.btn-danger:hover{background:rgba(239,68,68,.2);}
-.btn-success{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--accent3);}.btn-success:hover{background:rgba(16,185,129,.2);}
-.btn-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--warn);}.btn-warn:hover{background:rgba(245,158,11,.2);}
-.btn-purple{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.3);color:#a78bfa;}.btn-purple:hover{background:rgba(124,58,237,.2);}
-.btn-sm{padding:6px 12px;font-size:12px;}.btn-xs{padding:4px 8px;font-size:11px;}
+/* DESKTOP profile: avatar | info | stats */
+.profile-grid{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;}
+.profile-av{
+  width:clamp(52px,10vw,72px);height:clamp(52px,10vw,72px);border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(18px,4vw,28px);color:#000;
+  box-shadow:0 0 24px rgba(0,229,255,.18);flex-shrink:0;
+}
+.profile-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(17px,4vw,24px);}
+.profile-acct{font-family:'DM Mono',monospace;font-size:clamp(12px,2.5vw,14px);color:var(--accent);margin-top:3px;}
+.profile-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;}
+.meta-item .meta-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+.meta-item .meta-val{font-size:13px;font-weight:500;margin-top:2px;}
 
-/* TABLE */
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;}
-thead th{padding:12px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);white-space:nowrap;}
-tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
-tbody tr:hover{background:var(--surface2);}
-tbody tr:last-child{border-bottom:none;}
-td{padding:11px 14px;font-size:13px;vertical-align:middle;}
+/* STATS PILLS — desktop side panel */
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;min-width:280px;}
+.pstat{background:var(--surface2);padding:14px 16px;}
+.pstat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+.pstat-val{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(16px,3vw,22px);margin-top:4px;}
+.pstat-val.pos{color:var(--profit);}.pstat-val.neg{color:var(--loss);}
+
+/* MOBILE stats: full-width row of 3 cards */
+.stats-row{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.stats-row .scard{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;}
+.stats-row .scard .slbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+.stats-row .scard .sval{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-top:3px;}
+.stats-row .scard .sval.pos{color:var(--profit);}.stats-row .scard .sval.neg{color:var(--loss);}
+
+/* ── SECTION ── */
+.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.sec-title{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(15px,3.5vw,18px);}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;}
+.flt-btn{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);transition:all .15s;font-family:'DM Sans',sans-serif;touch-action:manipulation;}
+.flt-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.08);}
+
+/* ── TABLE CARD (desktop) ── */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.table-card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.table-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.dtable{width:100%;border-collapse:collapse;}
+table.dtable thead th{padding:11px 14px;text-align:left;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--surface);}
+table.dtable tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+table.dtable tbody tr:hover{background:rgba(255,255,255,.02);}
+table.dtable tbody tr:last-child{border-bottom:none;}
+table.dtable td{padding:13px 14px;font-size:13px;white-space:nowrap;vertical-align:middle;}
 .td-mono{font-family:'DM Mono',monospace;font-size:12px;}
-.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.profit-pos{color:var(--profit);font-family:'DM Mono',monospace;font-weight:600;}
+.profit-neg{color:var(--loss);font-family:'DM Mono',monospace;font-weight:600;}
+.profit-zero{color:var(--text2);font-family:'DM Mono',monospace;}
+.summary-row{padding:12px 20px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:24px;flex-wrap:wrap;align-items:center;}
+.sum-item .sum-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;}
+.sum-item .sum-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;margin-top:2px;}
+
+/* ── MOBILE TRADE CARDS ── */
+.mobile-trades{display:none;flex-direction:column;gap:10px;padding:12px;}
+.trade-card{
+  background:var(--surface2);border:1px solid var(--border2);border-radius:12px;
+  overflow:hidden;
+}
+.tc-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;border-bottom:1px solid var(--border);
+}
+.tc-stock{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
+.tc-date{font-size:11px;color:var(--text2);font-family:'DM Mono',monospace;}
+.tc-body{padding:12px 14px;}
+.tc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.tc-row:last-child{border-bottom:none;}
+.tc-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.tc-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;}
+.tc-footer{padding:10px 14px;background:var(--surface3);display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.tc-pstat{text-align:center;padding:8px;background:var(--surface2);border-radius:8px;}
+.tc-pstat .tc-plbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.tc-pstat .tc-pval{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;margin-top:2px;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;}
 .badge-blue{background:rgba(0,229,255,.1);color:var(--accent);border:1px solid rgba(0,229,255,.2);}
 .badge-purple{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.2);}
 .badge-green{background:rgba(16,185,129,.1);color:var(--accent3);border:1px solid rgba(16,185,129,.2);}
 .badge-warn{background:rgba(245,158,11,.1);color:var(--warn);border:1px solid rgba(245,158,11,.2);}
-.badge-red{background:rgba(239,68,68,.1);color:var(--danger);border:1px solid rgba(239,68,68,.2);}
 
-/* ACTION BTNS in trade row */
-.trade-actions{display:flex;gap:4px;flex-wrap:wrap;min-width:180px;}
+/* EMPTY STATE */
+.empty-state{padding:60px 20px;text-align:center;}
+.empty-state svg{width:48px;height:48px;margin:0 auto 14px;opacity:.2;display:block;}
+.empty-state h3{font-family:'Syne',sans-serif;font-size:15px;color:var(--text2);}
+.empty-state p{font-size:13px;color:var(--text3);margin-top:5px;}
 
-/* PROFIT */
-.profit-pos{color:var(--profit);font-family:'DM Mono',monospace;font-weight:600;}
-.profit-neg{color:var(--loss);font-family:'DM Mono',monospace;font-weight:600;}
-.profit-zero{color:var(--text2);font-family:'DM Mono',monospace;}
+/* LOADING */
+.spinner{width:36px;height:36px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:48px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 64px rgba(0,0,0,.6);}
-.modal-hdr{padding:22px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:2;}
-.modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;}
-.modal-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-left:10px;}
-.modal-close{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s;}
-.modal-close:hover{border-color:var(--danger);color:var(--danger);}
-.modal-body{padding:24px;}
-.modal-ftr{padding:18px 28px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
-
-/* FORMS */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
-.form-full{grid-column:1/-1;}
-.ff label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
-.ff input,.ff select,.ff textarea{width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;}
-.ff select option{background:var(--surface2);}
-.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,.08);}
-.ff input[readonly]{background:var(--surface3);color:var(--text2);cursor:default;}
-.ff textarea{resize:vertical;min-height:55px;}
-.field-auto .ff input{background:rgba(0,229,255,.04)!important;border-color:rgba(0,229,255,.18)!important;color:var(--accent)!important;font-family:'DM Mono',monospace!important;}
-.field-manual .ff input{background:rgba(16,185,129,.04)!important;border-color:rgba(16,185,129,.18)!important;}
-.field-warn .ff input{background:rgba(245,158,11,.04)!important;border-color:rgba(245,158,11,.18)!important;}
-
-/* SECTION DIVIDER */
-.sdiv{border-top:1px solid var(--border);margin:18px 0 14px;padding-top:14px;}
-.sdiv-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px;}
-
-/* INFO BOX */
-.info-box{padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:14px;}
-.info-box.blue{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);color:var(--accent);}
-.info-box.warn{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--warn);}
-.info-box.green{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);color:var(--accent3);}
-.info-box.danger{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:var(--danger);}
-
-/* CLIENT SELECTOR */
-.client-sel{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap;}
-.client-sel label{font-size:13px;font-weight:600;color:var(--text2);white-space:nowrap;}
-.client-sel select{flex:1;min-width:200px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;}
-
-/* CREDS */
-.creds-box{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:18px;margin-top:18px;}
-.creds-box h4{font-family:'Syne',sans-serif;font-size:14px;margin-bottom:12px;color:var(--accent);}
-.cred-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.cred-lbl{font-size:12px;color:var(--text2);}
-.cred-val{font-family:'DM Mono',monospace;font-size:13px;background:var(--surface3);padding:4px 10px;border-radius:6px;border:1px solid var(--border);}
-
-/* AGREEMENT */
-.agreement-preview{background:#fff;color:#111;padding:40px;border-radius:8px;font-family:'DM Sans',sans-serif;line-height:1.8;font-size:13px;}
-.agreement-preview h2{text-align:center;font-size:18px;margin-bottom:6px;}
-.agreement-preview h4{text-align:center;color:#555;font-size:13px;font-weight:400;margin-bottom:24px;}
-.agreement-preview table{border-collapse:collapse;width:100%;margin-bottom:18px;}
-.agreement-preview table td{padding:6px 12px;border:1px solid #ddd;}
-.agreement-preview .sig-block{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
-.agreement-preview .sig-line{border-top:1px solid #333;padding-top:6px;font-size:12px;color:#555;}
-
-/* FILE UPLOAD */
-.file-upload-area{border:2px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;}
-.file-upload-area:hover{border-color:var(--accent);}
-.file-upload-area p{font-size:13px;color:var(--text2);margin-top:8px;}
+/* FOOTER */
+.footer{text-align:center;font-size:11px;color:var(--text3);padding:20px 0;border-top:1px solid var(--border);margin-top:32px;}
 
 /* TOAST */
-.toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
-.toast{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);display:flex;align-items:center;gap:10px;animation:slideIn .2s ease;min-width:260px;}
-.toast.success{border-left:3px solid var(--accent3);}
-.toast.error{border-left:3px solid var(--danger);}
-.toast.info{border-left:3px solid var(--accent);}
-@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast-c{position:fixed;top:12px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:6px;max-width:calc(100vw - 24px);}
+.toast{background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--accent);border-radius:10px;padding:11px 16px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:tIn .2s ease;}
+@keyframes tIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-.search-input{padding:8px 13px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;font-family:'DM Sans',sans-serif;width:200px;transition:all .2s;}
-.search-input:focus{border-color:var(--accent);width:260px;}
+/* ════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+════════════════════════════════════════════ */
 
-/* TOGGLE */
-.toggle{position:relative;width:38px;height:20px;display:inline-block;}
-.toggle input{opacity:0;width:0;height:0;}
-.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:20px;cursor:pointer;transition:.2s;}
-.toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;}
-.toggle input:checked+.toggle-slider{background:var(--accent);}
-.toggle input:checked+.toggle-slider:before{transform:translateX(18px);}
+/* TABLET ≤ 900px */
+@media(max-width:900px){
+  .profile-grid{grid-template-columns:auto 1fr;grid-template-rows:auto auto;}
+  .profile-stats{grid-column:1/-1;grid-template-columns:repeat(3,1fr);}
+}
 
-@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:700px){.main-content{margin-left:0;}.sidebar{transform:translateX(-100%);}.form-grid,.form-grid-3{grid-template-columns:1fr;}}
+/* MOBILE ≤ 640px — full mobile layout */
+@media(max-width:640px){
+  .hdr-inner{padding:0 12px;}
+  .live-pill{display:none;}/* hide on very small */
+  .user-name{display:none;}
+  .portal-body{padding:14px 10px 32px;}
+
+  /* Profile: vertical stack */
+  .profile-grid{grid-template-columns:1fr;text-align:center;gap:12px;}
+  .profile-av{margin:0 auto;}
+  .profile-meta{justify-content:center;}
+  .profile-stats{display:none !important;}/* replaced by stats-row */
+  .stats-row{display:grid !important;}
+
+  /* Section header: stack vertically */
+  .sec-hdr{flex-direction:column;align-items:flex-start;}
+  .filter-bar{width:100%;}
+  .flt-btn{flex:1;text-align:center;}
+
+  /* Table: hide, show mobile cards instead */
+  .table-card .tbl-scroll{display:none;}
+  .table-card .summary-row{display:none;}
+  .mobile-trades{display:flex !important;}
+  .table-card-hdr{padding:12px 14px;}
+}
+
+/* SMALL MOBILE ≤ 380px */
+@media(max-width:380px){
+  .login-brand .wordmark{font-size:20px;}
+  .login-card{padding:20px;}
+  .stats-row .scard .sval{font-size:13px;}
+  .tc-stock{font-size:14px;}
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="mark">Trade with Afrasiab</div>
-      <p>Admin Control Panel</p>
+<!-- ─── LOGIN ─── -->
+<div id="loginPage">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="wordmark">Trade with Afrasiab</div>
+      <div class="tagline">Client Investment Portal</div>
     </div>
-    <div class="fg"><label>Email</label><input type="email" id="loginEmail" value="afrasiabdarson@gmail.com"></div>
-    <div class="fg"><label>Password</label><input type="password" id="loginPassword" value="AFRASIAB123$" onkeydown="if(event.key==='Enter')adminLogin()"></div>
-    <button class="btn-primary" onclick="adminLogin()">Sign In</button>
-    <div id="loginError">Invalid credentials. Please try again.</div>
+    <div class="login-card">
+      <h2>Welcome Back</h2>
+      <div class="sub">Sign in to view your portfolio</div>
+      <div class="fg"><label>Email Address</label><input type="email" id="clientEmail" placeholder="your@email.com" autocomplete="email" autocapitalize="none" autocorrect="off"></div>
+      <div class="fg"><label>Password</label><input type="password" id="clientPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')clientLogin()"></div>
+      <button class="btn-login" id="loginBtn" onclick="clientLogin()">Access My Portfolio</button>
+      <div class="login-err" id="loginErr">Invalid credentials. Please contact your fund manager.</div>
+      <div class="no-signup">No account? Contact Trade with Afrasiab for access.</div>
+    </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="appShell">
-  <aside class="sidebar">
-    <div class="sb-brand">
-      <div class="mark">Trade with Afrasiab</div>
-      <div class="sub">Admin Panel</div>
-    </div>
-    <div class="nav-sec">
-      <div class="nav-sec-lbl">Overview</div>
-      <div class="nav-item active" onclick="showView('dashboard',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard
-      </div>
-    </div>
-    <div class="nav-sec">
-      <div class="nav-sec-lbl">Management</div>
-      <div class="nav-item" onclick="showView('clients',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Client Management
-      </div>
-      <div class="nav-item" onclick="showView('trades',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Trade Transactions
-      </div>
-      <div class="nav-item" onclick="showView('agreements',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Agreements
-      </div>
-    </div>
-    <div class="sb-footer">
-      <div class="admin-badge">
-        <div class="admin-av">AD</div>
-        <div class="admin-info"><div class="name">Afrasiab</div><div class="role">Administrator</div></div>
-      </div>
-      <button class="logout-btn" onclick="adminLogout()">Sign Out</button>
-    </div>
-  </aside>
+<!-- ─── PORTAL ─── -->
+<div id="portal">
 
-  <main class="main-content">
-    <div class="topbar">
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-inner">
+      <div class="hdr-logo">Trade with Afrasiab</div>
+      <div class="hdr-right">
+        <div class="live-pill"><div class="live-dot"></div>Live</div>
+        <div class="user-chip">
+          <div class="user-av" id="hdrAv">--</div>
+          <span class="user-name" id="hdrName">...</span>
+        </div>
+        <button class="btn-out" onclick="clientLogout()">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="portal-body">
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card" id="profileSection"><div class="spinner"></div></div>
+
+    <!-- SECTION HEADER -->
+    <div class="sec-hdr">
       <div>
-        <div class="page-title" id="pageTitle">Dashboard</div>
-        <div class="page-sub" id="pageSub">Welcome back, Admin</div>
+        <div class="sec-title">Trading Portfolio</div>
+        <div class="sec-sub">Real-time trade history</div>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="status-dot"></div><span class="status-lbl">Firebase Live</span>
-      </div>
-    </div>
-    <div class="content-area">
-
-      <!-- DASHBOARD VIEW -->
-      <div class="view active" id="view-dashboard">
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-lbl">Total Clients</div><div class="stat-val" id="statClients">0</div><div class="stat-sub">Active accounts</div></div>
-          <div class="stat-card"><div class="stat-lbl">Total Booked Profit</div><div class="stat-val profit-pos" id="statProfit">₨0</div><div class="stat-sub">Across all clients</div></div>
-          <div class="stat-card"><div class="stat-lbl">Total Trades</div><div class="stat-val" id="statTrades">0</div><div class="stat-sub">All entries</div></div>
-          <div class="stat-card"><div class="stat-lbl">Unrealized P&L</div><div class="stat-val profit-pos" id="statUnrealized">₨0</div><div class="stat-sub">Open positions</div></div>
-        </div>
-        <div class="card">
-          <div class="card-hdr"><div class="card-title">Recent Clients</div><button class="btn btn-accent btn-sm" onclick="showView('clients',document.querySelector('.nav-item:nth-child(2)'))">View All</button></div>
-          <div class="table-wrap"><table>
-            <thead><tr><th>Client Name</th><th>Account #</th><th>Trading Type</th><th>Profit Share</th><th>Status</th></tr></thead>
-            <tbody id="dashClientsList"></tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <!-- CLIENTS VIEW -->
-      <div class="view" id="view-clients">
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">All Clients</div>
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <input type="text" class="search-input" placeholder="Search clients..." oninput="filterClients(this.value)">
-              <button class="btn btn-accent" onclick="openAddClientModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Client</button>
-            </div>
-          </div>
-          <div class="table-wrap"><table>
-            <thead><tr><th>Name</th><th>Account #</th><th>CNIC</th><th>Phone</th><th>Type</th><th>Profit Share</th><th>Actions</th></tr></thead>
-            <tbody id="clientsTableBody"></tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <!-- TRADES VIEW -->
-      <div class="view" id="view-trades">
-        <div class="client-sel">
-          <label>Select Client:</label>
-          <select id="tradeClientSelect" onchange="loadClientTrades()"><option value="">-- Select a client --</option></select>
-          <button class="btn btn-accent" onclick="openNewTradeModal()" id="addTradeBtn" disabled>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Trade Entry
-          </button>
-        </div>
-        <div class="card" id="tradesCard" style="display:none">
-          <div class="card-hdr">
-            <div>
-              <div class="card-title" id="tradesCardTitle">Trade History</div>
-              <div style="font-size:12px;color:var(--text2);margin-top:2px" id="tradesCardSub"></div>
-            </div>
-          </div>
-          <div class="table-wrap"><table>
-            <thead><tr>
-              <th>Date</th><th>Stock</th><th>Total Qty</th><th>Avg Price</th>
-              <th>Sold Qty</th><th>Sell Price</th><th>Remaining</th>
-              <th>Type</th><th>Booked P&L</th><th>Unrealized P&L</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="tradesTableBody"></tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <!-- AGREEMENTS VIEW -->
-      <div class="view" id="view-agreements">
-        <div class="card">
-          <div class="card-hdr">
-            <div class="card-title">Agreement Management</div>
-            <select id="agreeClientSelect" onchange="loadAgreementPreview()" style="padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;min-width:220px"><option value="">-- Select a client --</option></select>
-          </div>
-          <div class="card-body"><div id="agreementArea"><div style="text-align:center;padding:40px;color:var(--text3)">Select a client to generate their agreement</div></div></div>
-        </div>
-        <div class="card" id="uploadSection" style="display:none">
-          <div class="card-hdr"><div class="card-title">Upload Signed Agreement</div></div>
-          <div class="card-body">
-            <div class="file-upload-area" onclick="document.getElementById('agreeFile').click()">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5" style="margin:0 auto"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <p>Click to upload signed agreement (PDF, JPG, PNG)</p>
-            </div>
-            <input type="file" id="agreeFile" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="uploadAgreement(this)">
-            <div id="uploadedAgreementInfo" style="margin-top:12px"></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
-</div>
-
-<!-- ============================================================ -->
-<!-- ADD CLIENT MODAL -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="addClientModal">
-  <div class="modal">
-    <div class="modal-hdr"><div class="modal-title">Create Client Account</div><button class="modal-close" onclick="closeModal('addClientModal')">×</button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="ff"><label>Full Name *</label><input type="text" id="cl_name" placeholder="e.g. Muhammad Ali"></div>
-        <div class="ff"><label>Account Number *</label><input type="text" id="cl_accno" placeholder="e.g. ACC-001"></div>
-        <div class="ff"><label>CNIC</label><input type="text" id="cl_cnic" placeholder="35202-XXXXXXX-X"></div>
-        <div class="ff"><label>Address</label><input type="text" id="cl_address" placeholder="City, Pakistan"></div>
-        <div class="ff"><label>Phone</label><input type="text" id="cl_phone" placeholder="+92-XXX-XXXXXXX"></div>
-        <div class="ff"><label>WhatsApp</label><input type="text" id="cl_whatsapp" placeholder="+92-XXX-XXXXXXX"></div>
-        <div class="ff"><label>Trading Type *</label><select id="cl_type"><option value="Portfolio Management">Portfolio Management</option><option value="Futures Trading">Futures Trading</option><option value="Equity Trading">Equity Trading</option></select></div>
-        <div class="ff"><label>Profit Sharing % *</label><input type="text" id="cl_profit" placeholder="e.g. 20%"></div>
-        <div class="ff"><label>Login Email *</label><input type="email" id="cl_email" placeholder="client@email.com"></div>
-        <div class="ff"><label>Login Password *</label><input type="text" id="cl_pass" placeholder="Set password"></div>
-      </div>
-      <div class="creds-box" id="credsPreview" style="display:none">
-        <h4>✓ Credentials Generated</h4>
-        <div class="cred-row"><span class="cred-lbl">Email:</span><span class="cred-val" id="cred_email"></span></div>
-        <div class="cred-row"><span class="cred-lbl">Password:</span><span class="cred-val" id="cred_pass"></span></div>
-        <div class="cred-row"><span class="cred-lbl">Portal URL:</span><span class="cred-val">client.html</span></div>
+      <div class="filter-bar">
+        <button class="flt-btn active" onclick="filterTrades('all',this)">All</button>
+        <button class="flt-btn" onclick="filterTrades('new',this)">New</button>
+        <button class="flt-btn" onclick="filterTrades('avg',this)">Averaged</button>
       </div>
     </div>
-    <div class="modal-ftr"><button class="btn btn-outline" onclick="closeModal('addClientModal')">Cancel</button><button class="btn btn-accent" onclick="createClient()">Create Account</button></div>
+
+    <!-- TABLE CARD -->
+    <div class="table-card">
+      <div class="table-card-hdr">
+        <div class="table-card-title">Trade Transactions</div>
+        <div style="font-size:12px;color:var(--text2)" id="tradeCount">Loading...</div>
+      </div>
+
+      <!-- DESKTOP TABLE -->
+      <div class="tbl-scroll">
+        <table class="dtable">
+          <thead><tr>
+            <th>Date</th><th>Stock</th><th>Type</th>
+            <th>Total Qty</th><th>Avg Buy Price</th>
+            <th>Sold Qty</th><th>Sell Price</th>
+            <th>Remaining</th><th>Booked P&L</th><th>Unrealized P&L</th>
+          </tr></thead>
+          <tbody id="tradesBody"><tr><td colspan="10"><div class="spinner"></div></td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- MOBILE TRADE CARDS (hidden on desktop) -->
+      <div class="mobile-trades" id="mobileTradesBody">
+        <div style="padding:30px;text-align:center"><div class="spinner"></div></div>
+      </div>
+
+      <!-- SUMMARY ROW -->
+      <div class="summary-row" id="summaryRow" style="display:none">
+        <div class="sum-item"><div class="sum-lbl">Trades</div><div class="sum-val" id="sumCount">0</div></div>
+        <div class="sum-item"><div class="sum-lbl">Booked P&L</div><div class="sum-val profit-pos" id="sumBooked">₨0.00</div></div>
+        <div class="sum-item"><div class="sum-lbl">Unrealized P&L</div><div class="sum-val profit-pos" id="sumUnrealized">₨0.00</div></div>
+        <div class="sum-item"><div class="sum-lbl">Net P&L</div><div class="sum-val" id="sumNet">₨0.00</div></div>
+      </div>
+    </div>
+
+    <div class="footer">© 2024 Trade with Afrasiab · Data updates in real-time · Contact your fund manager for support</div>
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- NEW TRADE MODAL (fresh position) -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="newTradeModal">
-  <div class="modal">
-    <div class="modal-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="modal-title">New Trade Entry</div><span class="modal-badge badge-blue">Fresh Position</span></div><button class="modal-close" onclick="closeModal('newTradeModal')">×</button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="ff"><label>Trade Date *</label><input type="date" id="nt_date"></div>
-        <div class="ff"><label>Stock / Symbol *</label><input type="text" id="nt_stock" placeholder="e.g. ENGRO" oninput="this.value=this.value.toUpperCase()"></div>
-        <div class="ff"><label>Buying Quantity *</label><input type="number" id="nt_buyqty" placeholder="0" min="0" oninput="calcNew()"></div>
-        <div class="ff"><label>Buying Price per Share (₨) *</label><input type="number" id="nt_buyprice" placeholder="0.00" step="0.01" min="0" oninput="calcNew()"></div>
-        <div class="ff"><label>Sell Quantity (optional)</label><input type="number" id="nt_sellqty" placeholder="0" min="0" oninput="calcNew()"></div>
-        <div class="ff"><label>Sell Price per Share (₨)</label><input type="number" id="nt_sellprice" placeholder="0.00" step="0.01" min="0" oninput="calcNew()"></div>
-      </div>
-      <div class="sdiv"><div class="sdiv-lbl">📊 Calculated Results</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>Remaining Qty</label><input type="number" id="nt_remaining" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Booked P&L (₨)</label><input type="number" id="nt_booked" readonly></div></div>
-          <div class="field-manual"><div class="ff"><label>Unrealized P&L (₨) ✎</label><input type="number" id="nt_unrealized" placeholder="Enter manually" step="0.01"></div></div>
-        </div>
-      </div>
-      <div class="ff form-full" style="margin-top:14px"><label>Notes</label><textarea id="nt_notes" placeholder="Optional notes..."></textarea></div>
-    </div>
-    <div class="modal-ftr"><button class="btn btn-outline" onclick="closeModal('newTradeModal')">Cancel</button><button class="btn btn-accent" onclick="saveNewTrade()">Save Trade</button></div>
-  </div>
-</div>
+<div class="toast-c" id="toastC"></div>
 
-<!-- ============================================================ -->
-<!-- ADD MORE MODAL (average in more quantity to existing trade) -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="addMoreModal">
-  <div class="modal">
-    <div class="modal-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="modal-title">Add More Quantity</div><span class="modal-badge badge-warn">Average In</span></div><button class="modal-close" onclick="closeModal('addMoreModal')">×</button></div>
-    <div class="modal-body">
-      <div class="info-box warn" id="addMoreInfoBox">Loading trade details...</div>
-
-      <!-- EXISTING POSITION -->
-      <div class="sdiv"><div class="sdiv-lbl">📦 Current Position</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>Current Total Qty</label><input type="number" id="am_curqty" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Current Avg Price (₨)</label><input type="number" id="am_curavg" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Current Remaining</label><input type="number" id="am_curremaining" readonly></div></div>
-        </div>
-      </div>
-
-      <!-- ADD MORE -->
-      <div class="sdiv"><div class="sdiv-lbl">➕ New Quantity to Add</div>
-        <div class="form-grid">
-          <div class="ff"><label>Additional Quantity *</label><input type="number" id="am_addqty" placeholder="How many more shares" min="1" oninput="calcAddMore()"></div>
-          <div class="ff"><label>New Buy Price per Share (₨) *</label><input type="number" id="am_addprice" placeholder="0.00" step="0.01" min="0" oninput="calcAddMore()"></div>
-        </div>
-      </div>
-
-      <!-- NEW AVERAGES -->
-      <div class="sdiv"><div class="sdiv-lbl">🔢 New Averages (Auto-Calculated)</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>New Total Qty</label><input type="number" id="am_newtotalqty" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>New Avg Price (₨)</label><input type="number" id="am_newavg" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>New Remaining</label><input type="number" id="am_newremaining" readonly></div></div>
-        </div>
-        <div class="info-box blue" style="margin-top:12px">
-          📐 Formula: New Avg = (Current Total × Current Avg + Additional × New Price) ÷ New Total
-        </div>
-      </div>
-
-      <div class="sdiv"><div class="sdiv-lbl">💰 Updated P&L</div>
-        <div class="form-grid">
-          <div class="field-auto"><div class="ff"><label>Updated Booked P&L (₨)</label><input type="number" id="am_booked" readonly></div></div>
-          <div class="field-manual"><div class="ff"><label>Unrealized P&L (₨) ✎ Manual</label><input type="number" id="am_unrealized" placeholder="Enter based on market price" step="0.01"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-ftr"><button class="btn btn-outline" onclick="closeModal('addMoreModal')">Cancel</button><button class="btn btn-warn" onclick="saveAddMore()">Update Position</button></div>
-  </div>
-</div>
-
-<!-- ============================================================ -->
-<!-- SELL MODAL (sell from existing position) -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="sellModal">
-  <div class="modal">
-    <div class="modal-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="modal-title">Record Sale</div><span class="modal-badge badge-green">Sell Position</span></div><button class="modal-close" onclick="closeModal('sellModal')">×</button></div>
-    <div class="modal-body">
-      <div class="info-box green" id="sellInfoBox">Loading trade details...</div>
-
-      <!-- EXISTING POSITION -->
-      <div class="sdiv"><div class="sdiv-lbl">📦 Current Position</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>Total Qty Held</label><input type="number" id="sl_curqty" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Avg Buy Price (₨)</label><input type="number" id="sl_avgprice" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Currently Remaining</label><input type="number" id="sl_curremaining" readonly></div></div>
-        </div>
-      </div>
-
-      <!-- SELL DETAILS -->
-      <div class="sdiv"><div class="sdiv-lbl">📤 Sell Details</div>
-        <div class="form-grid">
-          <div class="ff"><label>Quantity to Sell *</label><input type="number" id="sl_sellqty" placeholder="How many to sell" min="1" oninput="calcSell()"></div>
-          <div class="ff"><label>Sell Price per Share (₨) *</label><input type="number" id="sl_sellprice" placeholder="0.00" step="0.01" min="0" oninput="calcSell()"></div>
-        </div>
-        <div class="info-box warn" id="sellWarning" style="display:none;margin-top:10px"></div>
-      </div>
-
-      <!-- RESULTS -->
-      <div class="sdiv"><div class="sdiv-lbl">📊 After Sale Results</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>Total Sold Qty</label><input type="number" id="sl_totalsold" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Remaining After Sale</label><input type="number" id="sl_remaining" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>New Booked P&L (₨)</label><input type="number" id="sl_booked" readonly></div></div>
-        </div>
-        <div class="form-grid" style="margin-top:14px">
-          <div class="field-warn"><div class="ff"><label>This Sale P&L (₨)</label><input type="number" id="sl_thissale" readonly></div></div>
-          <div class="field-manual"><div class="ff"><label>Unrealized P&L (₨) ✎ Manual</label><input type="number" id="sl_unrealized" placeholder="Enter for remaining qty" step="0.01"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-ftr"><button class="btn btn-outline" onclick="closeModal('sellModal')">Cancel</button><button class="btn btn-success" onclick="saveSell()">Record Sale</button></div>
-  </div>
-</div>
-
-<!-- ============================================================ -->
-<!-- EDIT TRADE MODAL (edit all fields directly) -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="editTradeModal">
-  <div class="modal">
-    <div class="modal-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="modal-title">Edit Trade Entry</div><span class="modal-badge badge-purple">Direct Edit</span></div><button class="modal-close" onclick="closeModal('editTradeModal')">×</button></div>
-    <div class="modal-body">
-      <div class="info-box blue">All fields are editable. P&L will auto-recalculate based on qty × (sell − avg price).</div>
-      <div class="form-grid" style="margin-top:16px">
-        <div class="ff"><label>Trade Date</label><input type="date" id="et_date"></div>
-        <div class="ff"><label>Stock / Symbol</label><input type="text" id="et_stock" oninput="this.value=this.value.toUpperCase()"></div>
-        <div class="ff"><label>Total Buy Quantity</label><input type="number" id="et_buyqty" min="0" oninput="calcEdit()"></div>
-        <div class="ff"><label>Avg Buy Price (₨)</label><input type="number" id="et_avgprice" step="0.01" min="0" oninput="calcEdit()"></div>
-        <div class="ff"><label>Total Sold Quantity</label><input type="number" id="et_sellqty" min="0" oninput="calcEdit()"></div>
-        <div class="ff"><label>Last Sell Price (₨)</label><input type="number" id="et_sellprice" step="0.01" min="0" oninput="calcEdit()"></div>
-      </div>
-      <div class="sdiv"><div class="sdiv-lbl">Calculated Results</div>
-        <div class="form-grid-3">
-          <div class="field-auto"><div class="ff"><label>Remaining Qty</label><input type="number" id="et_remaining" readonly></div></div>
-          <div class="field-auto"><div class="ff"><label>Booked P&L (₨)</label><input type="number" id="et_booked" readonly></div></div>
-          <div class="field-manual"><div class="ff"><label>Unrealized P&L (₨) ✎</label><input type="number" id="et_unrealized" placeholder="Enter manually" step="0.01"></div></div>
-        </div>
-      </div>
-      <div class="ff" style="margin-top:14px"><label>Notes</label><textarea id="et_notes"></textarea></div>
-    </div>
-    <div class="modal-ftr"><button class="btn btn-outline" onclick="closeModal('editTradeModal')">Cancel</button><button class="btn btn-accent" onclick="saveEditTrade()">Update Trade</button></div>
-  </div>
-</div>
-
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- ============================================================ -->
-<!-- FIREBASE SCRIPT -->
-<!-- ============================================================ -->
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged }
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getDatabase, ref, set, push, onValue, remove, update }
+import { getDatabase, ref, onValue }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyAsrBpXj-JF88A9vCUJp2HuK8F-3xzkgSg",authDomain:"darson-trade.firebaseapp.com",
@@ -542,483 +357,188 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-const storage = getStorage(app);
-
 const ADMIN_EMAIL = "afrasiabdarson@gmail.com";
-let allClients = {};
-let adminPass = 'AFRASIAB123$';
-let activeTid = null; // trade ID for add-more / sell modals
-let activeUid = null; // client UID for modals
+let allTrades = {}, currentFilter = 'all';
 
-// =================== AUTH ===================
-window.adminLogin = async () => {
-  const email = document.getElementById('loginEmail').value;
-  const pass = document.getElementById('loginPassword').value;
-  adminPass = pass;
-  if (email !== ADMIN_EMAIL) { showLoginErr(); return; }
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    if (['auth/user-not-found','auth/invalid-credential','auth/invalid-login-credentials'].includes(e.code)) {
-      try { await createUserWithEmailAndPassword(auth, email, pass); } catch { showLoginErr(); }
-    } else { showLoginErr(); }
-  }
+// ── AUTH ──
+window.clientLogin = async () => {
+  const email=document.getElementById('clientEmail').value.trim();
+  const pass=document.getElementById('clientPassword').value;
+  if(!email||!pass){showErr('Please enter your email and password.');return;}
+  if(email===ADMIN_EMAIL){showErr('Please use the Admin Panel.');return;}
+  const btn=document.getElementById('loginBtn');
+  btn.disabled=true; btn.textContent='Signing in...';
+  try { await signInWithEmailAndPassword(auth,email,pass); }
+  catch(e){ showErr('Invalid credentials. Please contact your fund manager.'); btn.disabled=false; btn.textContent='Access My Portfolio'; }
 };
-function showLoginErr() {
-  const el = document.getElementById('loginError'); el.style.display = 'block';
-  setTimeout(() => el.style.display = 'none', 3000);
-}
-onAuthStateChanged(auth, user => {
-  if (user && user.email === ADMIN_EMAIL) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appShell').style.display = 'flex';
-    listenClients();
-  } else if (!user) {
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('appShell').style.display = 'none';
+function showErr(msg){const el=document.getElementById('loginErr');el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+onAuthStateChanged(auth,user=>{
+  if(user&&user.email!==ADMIN_EMAIL){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('portal').style.display='block';
+    loadData(user.uid);
+  } else if(!user){
+    document.getElementById('loginPage').style.display='flex';
+    document.getElementById('portal').style.display='none';
   }
 });
-window.adminLogout = () => signOut(auth);
+window.clientLogout=()=>signOut(auth);
 
-// =================== DATA ===================
-function listenClients() {
-  onValue(ref(db, 'clients'), snap => {
-    allClients = snap.val() || {};
-    renderClientsTable(); renderDashClients(); updateStats(); populateSelects();
-    const uid = document.getElementById('tradeClientSelect').value;
-    if (uid && allClients[uid]) renderTradesTable(allClients[uid].trades || {});
+// ── DATA ──
+function loadData(uid){
+  onValue(ref(db,'clients/'+uid),snap=>{
+    const c=snap.val(); if(!c){showToast('Account data not found.');return;}
+    renderProfile(c);
+    allTrades=c.trades||{};
+    renderTrades(allTrades);
+    updateHeader(c);
   });
 }
-
-function updateStats() {
-  document.getElementById('statClients').textContent = Object.keys(allClients).length;
-  let tb=0, tu=0, tt=0;
-  for (const cid in allClients)
-    for (const tid in (allClients[cid].trades||{})) {
-      const t = allClients[cid].trades[tid];
-      tb += parseFloat(t.bookedProfit||0);
-      tu += parseFloat(t.unrealizedProfit||0);
-      tt++;
-    }
-  document.getElementById('statProfit').textContent = '₨'+fmt(tb);
-  document.getElementById('statUnrealized').textContent = '₨'+fmt(tu);
-  document.getElementById('statTrades').textContent = tt;
+function updateHeader(c){
+  const ini=initials(c.name);
+  document.getElementById('hdrAv').textContent=ini;
+  document.getElementById('hdrName').textContent=c.name;
 }
 
-// =================== VIEWS ===================
-window.showView = (view, el) => {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-'+view)?.classList.add('active');
-  if (el) el.classList.add('active');
-  const map = {
-    dashboard:['Dashboard','Overview & Statistics'],
-    clients:['Client Management','All registered trading clients'],
-    trades:['Trade Transactions','Manage daily trading records'],
-    agreements:['Agreements','Client agreements (Admin only)']
-  };
-  document.getElementById('pageTitle').textContent = map[view]?.[0]||view;
-  document.getElementById('pageSub').textContent = map[view]?.[1]||'';
-};
-
-// =================== CLIENTS ===================
-window.openAddClientModal = () => {
-  ['cl_name','cl_accno','cl_cnic','cl_address','cl_phone','cl_whatsapp','cl_email','cl_pass'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('credsPreview').style.display='none';
-  openModal('addClientModal');
-};
-window.createClient = async () => {
-  const name=v('cl_name'), email=v('cl_email'), pass=v('cl_pass'), accno=v('cl_accno');
-  if (!name||!email||!pass||!accno) { showToast('Fill required fields','error'); return; }
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await set(ref(db,'clients/'+cred.user.uid), {
-      uid:cred.user.uid,name,email,password:pass,accno,
-      cnic:v('cl_cnic'),address:v('cl_address'),phone:v('cl_phone'),whatsapp:v('cl_whatsapp'),
-      type:v('cl_type'),profitShare:v('cl_profit'),createdAt:new Date().toISOString()
-    });
-    await signInWithEmailAndPassword(auth, ADMIN_EMAIL, adminPass);
-    document.getElementById('cred_email').textContent = email;
-    document.getElementById('cred_pass').textContent = pass;
-    document.getElementById('credsPreview').style.display = 'block';
-    showToast('Client created!','success');
-    setTimeout(()=>closeModal('addClientModal'),3000);
-  } catch(e) { showToast('Error: '+e.message,'error'); }
-};
-function renderClientsTable() {
-  const tbody = document.getElementById('clientsTableBody');
-  const cl = Object.entries(allClients);
-  if (!cl.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:36px;color:var(--text3)">No clients yet.</td></tr>'; return; }
-  tbody.innerHTML = cl.map(([uid,c]) => `<tr>
-    <td><strong>${esc(c.name)}</strong><br><span style="font-size:11px;color:var(--text3)">${esc(c.email)}</span></td>
-    <td class="td-mono">${esc(c.accno)}</td><td class="td-mono">${esc(c.cnic||'-')}</td>
-    <td>${esc(c.phone||'-')}</td>
-    <td><span class="badge ${tbadge(c.type)}">${esc(c.type)}</span></td>
-    <td class="td-mono profit-pos">${esc(c.profitShare||'0%')}</td>
-    <td style="display:flex;gap:5px;flex-wrap:wrap">
-      <button class="btn btn-success btn-xs" onclick="goToTrades('${uid}')">Trades</button>
-      <button class="btn btn-danger btn-xs" onclick="deleteClient('${uid}')">Delete</button>
-    </td>
-  </tr>`).join('');
-}
-function renderDashClients() {
-  const tbody = document.getElementById('dashClientsList');
-  const cl = Object.entries(allClients).slice(0,5);
-  if (!cl.length) { tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text3)">No clients yet</td></tr>'; return; }
-  tbody.innerHTML = cl.map(([uid,c]) => `<tr>
-    <td><strong>${esc(c.name)}</strong></td><td class="td-mono">${esc(c.accno)}</td>
-    <td><span class="badge ${tbadge(c.type)}">${esc(c.type)}</span></td>
-    <td class="profit-pos td-mono">${esc(c.profitShare||'0%')}</td>
-    <td><span class="badge badge-green">Active</span></td>
-  </tr>`).join('');
-}
-window.deleteClient = async uid => {
-  if (!confirm('Delete this client and all data?')) return;
-  await remove(ref(db,'clients/'+uid)); showToast('Client deleted','info');
-};
-window.filterClients = q => {
-  document.querySelectorAll('#clientsTableBody tr').forEach(r => r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none');
-};
-window.goToTrades = uid => {
-  showView('trades', document.querySelectorAll('.nav-item')[1]);
-  setTimeout(()=>{ document.getElementById('tradeClientSelect').value=uid; loadClientTrades(); },80);
-};
-function populateSelects() {
-  ['tradeClientSelect','agreeClientSelect'].forEach(sid => {
-    const sel=document.getElementById(sid), cur=sel.value;
-    sel.innerHTML='<option value="">-- Select a client --</option>'+
-      Object.entries(allClients).map(([uid,c])=>`<option value="${uid}" ${uid===cur?'selected':''}>${esc(c.name)} — ${esc(c.accno)}</option>`).join('');
-    if (cur) sel.value=cur;
-  });
+// ── PROFILE ──
+function renderProfile(c){
+  const trades=c.trades||{};
+  let tb=0,tu=0,tc=0;
+  for(const t of Object.values(trades)){tb+=parseFloat(t.bookedProfit||0);tu+=parseFloat(t.unrealizedProfit||0);tc++;}
+  const ini=initials(c.name);
+  document.getElementById('profileSection').innerHTML=`
+    <div class="profile-grid">
+      <div class="profile-av">${esc(ini)}</div>
+      <div>
+        <div class="profile-name">${esc(c.name)}</div>
+        <div class="profile-acct">Account: ${esc(c.accno)}</div>
+        <div class="profile-meta">
+          <div class="meta-item"><div class="meta-lbl">Type</div><div class="meta-val"><span class="badge ${tbadge(c.type)}">${esc(c.type)}</span></div></div>
+          <div class="meta-item"><div class="meta-lbl">Profit Share</div><div class="meta-val" style="color:var(--accent3);font-weight:600">${esc(c.profitShare)}</div></div>
+          <div class="meta-item"><div class="meta-lbl">Phone</div><div class="meta-val">${esc(c.phone||'—')}</div></div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="pstat-lbl">Trades</div><div class="pstat-val">${tc}</div></div>
+        <div class="pstat"><div class="pstat-lbl">Booked P&L</div><div class="pstat-val ${tb>=0?'pos':'neg'}">₨${fmt(tb)}</div></div>
+        <div class="pstat"><div class="pstat-lbl">Unrealized</div><div class="pstat-val ${tu>=0?'pos':'neg'}">₨${fmt(tu)}</div></div>
+      </div>
+    </div>
+    <!-- MOBILE STATS ROW (visible only on small screens) -->
+    <div class="stats-row">
+      <div class="scard"><div class="slbl">Trades</div><div class="sval">${tc}</div></div>
+      <div class="scard"><div class="slbl">Booked P&L</div><div class="sval ${tb>=0?'pos':'neg'}">₨${fmtShort(tb)}</div></div>
+      <div class="scard"><div class="slbl">Unrealized</div><div class="sval ${tu>=0?'pos':'neg'}">₨${fmtShort(tu)}</div></div>
+    </div>`;
 }
 
-// =================== TRADES ===================
-window.loadClientTrades = () => {
-  const uid = document.getElementById('tradeClientSelect').value;
-  document.getElementById('addTradeBtn').disabled = !uid;
-  if (!uid) { document.getElementById('tradesCard').style.display='none'; return; }
-  const c = allClients[uid]; if (!c) return;
-  document.getElementById('tradesCard').style.display='';
-  document.getElementById('tradesCardTitle').textContent = `${c.name} — Trade History`;
-  document.getElementById('tradesCardSub').textContent = `${c.type} | Profit Share: ${c.profitShare}`;
-  renderTradesTable(c.trades||{});
-};
+// ── TRADES ──
+function renderTrades(trades){
+  const entries=Object.entries(trades)
+    .filter(([,t])=>currentFilter==='new'?!t.isAverage:currentFilter==='avg'?t.isAverage:true)
+    .sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
 
-function renderTradesTable(trades) {
-  const tbody = document.getElementById('tradesTableBody');
-  const entries = Object.entries(trades).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
-  if (!entries.length) { tbody.innerHTML='<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text3)">No trades yet for this client</td></tr>'; return; }
-  tbody.innerHTML = entries.map(([tid,t]) => {
-    const bp=parseFloat(t.bookedProfit||0), up=parseFloat(t.unrealizedProfit||0);
-    const avgP = parseFloat(t.avgPrice||t.buyPrice||0);
-    const remaining = parseFloat(t.remaining||0);
+  document.getElementById('tradeCount').textContent=`${entries.length} transaction${entries.length!==1?'s':''}`;
+
+  if(!entries.length){
+    const empty=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><h3>No trades yet</h3><p>Your fund manager will update your portfolio soon</p></div>`;
+    document.getElementById('tradesBody').innerHTML=`<tr><td colspan="10">${empty}</td></tr>`;
+    document.getElementById('mobileTradesBody').innerHTML=empty;
+    document.getElementById('summaryRow').style.display='none';
+    return;
+  }
+
+  let tb=0,tu=0;
+
+  // Desktop table rows
+  document.getElementById('tradesBody').innerHTML=entries.map(([tid,t])=>{
+    const bp=parseFloat(t.bookedProfit||0),up=parseFloat(t.unrealizedProfit||0);
+    tb+=bp; tu+=up;
+    const avgP=parseFloat(t.avgPrice||t.buyPrice||0);
+    const rem=parseFloat(t.remaining||0);
     return `<tr>
-      <td class="td-mono">${esc(t.date||'-')}</td>
-      <td><strong>${esc(t.stock||'-')}</strong>${t.notes?`<br><span style="font-size:10px;color:var(--text3)">${esc(t.notes)}</span>`:''}</td>
+      <td class="td-mono">${esc(t.date||'—')}</td>
+      <td><strong>${esc(t.stock||'—')}</strong>${t.notes?`<br><span style="font-size:11px;color:var(--text3)">${esc(t.notes)}</span>`:''}</td>
+      <td><span class="badge ${t.isAverage?'badge-warn':'badge-blue'}">${t.isAverage?'Avg':'New'}</span></td>
       <td class="td-mono">${fmtN(t.buyQty||0)}</td>
-      <td class="td-mono">₨${fmt(avgP)}<br><span style="font-size:10px;color:var(--text3)">avg</span></td>
+      <td class="td-mono">₨${fmt(avgP)}</td>
       <td class="td-mono">${fmtN(t.sellQty||0)}</td>
       <td class="td-mono">${parseFloat(t.sellPrice||0)>0?'₨'+fmt(t.sellPrice):'—'}</td>
-      <td class="td-mono">${remaining>0?`<span style="color:var(--accent3);font-weight:600">${fmtN(remaining)}</span>`:'<span style="color:var(--text3)">0 (Closed)</span>'}</td>
-      <td><span class="badge ${t.isAverage?'badge-warn':'badge-blue'}">${t.isAverage?'Avg Entry':'New'}</span></td>
+      <td class="td-mono">${rem>0?`<span style="color:var(--accent3);font-weight:600">${fmtN(rem)}</span>`:'<span style="color:var(--text3)">Closed</span>'}</td>
       <td class="${bp>0?'profit-pos':bp<0?'profit-neg':'profit-zero'}">${bp>=0?'+':''}₨${fmt(bp)}</td>
       <td class="${up>0?'profit-pos':up<0?'profit-neg':'profit-zero'}">${up>=0?'+':''}₨${fmt(up)}</td>
-      <td>
-        <div class="trade-actions">
-          <button class="btn btn-warn btn-xs" onclick="openAddMore('${tid}')" title="Add more qty & re-average">➕ Add More</button>
-          ${remaining>0?`<button class="btn btn-success btn-xs" onclick="openSell('${tid}')" title="Record a sale">📤 Sell</button>`:'<span style="font-size:11px;color:var(--text3);padding:4px 6px">Position Closed</span>'}
-          <button class="btn btn-purple btn-xs" onclick="openEditTrade('${tid}')" title="Edit all fields">✎</button>
-          <button class="btn btn-danger btn-xs" onclick="deleteTrade('${tid}')" title="Delete entry">🗑</button>
-        </div>
-      </td>
     </tr>`;
   }).join('');
-}
 
-// =================== NEW TRADE ===================
-window.openNewTradeModal = () => {
-  ['nt_stock','nt_buyqty','nt_buyprice','nt_sellqty','nt_sellprice','nt_remaining','nt_booked','nt_unrealized','nt_notes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('nt_date').value = new Date().toISOString().split('T')[0];
-  openModal('newTradeModal');
-};
-window.calcNew = () => {
-  const bq=n('nt_buyqty'), bp=n('nt_buyprice'), sq=n('nt_sellqty'), sp=n('nt_sellprice');
-  document.getElementById('nt_remaining').value = Math.max(bq-sq,0)||'';
-  document.getElementById('nt_booked').value = sq>0&&sp>0 ? (sq*(sp-bp)).toFixed(2) : '';
-};
-window.saveNewTrade = async () => {
-  const uid = document.getElementById('tradeClientSelect').value; if (!uid) return;
-  const stock=v('nt_stock'), date=v('nt_date');
-  if (!stock||!date) { showToast('Date and Stock required','error'); return; }
-  const bq=n('nt_buyqty'), bp=n('nt_buyprice'), sq=n('nt_sellqty'), sp=n('nt_sellprice');
-  await push(ref(db,`clients/${uid}/trades`), {
-    date, stock, buyQty:bq, buyPrice:bp, avgPrice:bp,
-    sellQty:sq, sellPrice:sp,
-    remaining:Math.max(bq-sq,0),
-    bookedProfit:sq>0&&sp>0?(sq*(sp-bp)):0,
-    unrealizedProfit:n('nt_unrealized'),
-    isAverage:false,
-    notes:v('nt_notes'),
-    addedAt:new Date().toISOString()
-  });
-  showToast('Trade saved!','success');
-  closeModal('newTradeModal');
-};
-
-// =================== ADD MORE (Average In) ===================
-window.openAddMore = tid => {
-  const uid = document.getElementById('tradeClientSelect').value; if (!uid) return;
-  const t = allClients[uid]?.trades?.[tid]; if (!t) return;
-  activeTid = tid; activeUid = uid;
-  const curQty = parseFloat(t.buyQty||0);
-  const curAvg = parseFloat(t.avgPrice||t.buyPrice||0);
-  const curRem = parseFloat(t.remaining||0);
-  document.getElementById('addMoreInfoBox').innerHTML = `📊 <strong>${esc(t.stock)}</strong> — Adding to existing position of <strong>${fmtN(curQty)} shares</strong> at avg <strong>₨${fmt(curAvg)}</strong>`;
-  document.getElementById('am_curqty').value = curQty;
-  document.getElementById('am_curavg').value = curAvg;
-  document.getElementById('am_curremaining').value = curRem;
-  document.getElementById('am_addqty').value = '';
-  document.getElementById('am_addprice').value = '';
-  document.getElementById('am_newtotalqty').value = '';
-  document.getElementById('am_newavg').value = '';
-  document.getElementById('am_newremaining').value = '';
-  document.getElementById('am_booked').value = t.bookedProfit||'';
-  document.getElementById('am_unrealized').value = t.unrealizedProfit||'';
-  openModal('addMoreModal');
-};
-window.calcAddMore = () => {
-  const curQty=n('am_curqty'), curAvg=n('am_curavg'), curRem=n('am_curremaining');
-  const addQty=n('am_addqty'), addPrice=n('am_addprice');
-  if (!addQty||!addPrice) return;
-  const newTotalQty = curQty + addQty;
-  const newAvg = ((curQty*curAvg)+(addQty*addPrice)) / newTotalQty;
-  const newRemaining = curRem + addQty; // adding more shares increases remaining
-  document.getElementById('am_newtotalqty').value = newTotalQty;
-  document.getElementById('am_newavg').value = newAvg.toFixed(4);
-  document.getElementById('am_newremaining').value = newRemaining;
-  // Booked P&L stays same (no new sell)
-  const t = allClients[activeUid]?.trades?.[activeTid];
-  document.getElementById('am_booked').value = t?.bookedProfit||0;
-};
-window.saveAddMore = async () => {
-  if (!activeTid||!activeUid) return;
-  const addQty=n('am_addqty'), addPrice=n('am_addprice');
-  if (!addQty||!addPrice) { showToast('Enter additional quantity and price','error'); return; }
-  const t = allClients[activeUid].trades[activeTid];
-  const curQty=parseFloat(t.buyQty||0), curAvg=parseFloat(t.avgPrice||t.buyPrice||0);
-  const curRem=parseFloat(t.remaining||0);
-  const newTotalQty = curQty+addQty;
-  const newAvg = ((curQty*curAvg)+(addQty*addPrice))/newTotalQty;
-  const newRemaining = curRem+addQty;
-  await update(ref(db,`clients/${activeUid}/trades/${activeTid}`), {
-    buyQty: newTotalQty,
-    avgPrice: parseFloat(newAvg.toFixed(4)),
-    remaining: newRemaining,
-    isAverage: true,
-    unrealizedProfit: n('am_unrealized'),
-    lastAddedQty: addQty,
-    lastAddedPrice: addPrice,
-    updatedAt: new Date().toISOString()
-  });
-  showToast(`Position updated! New avg: ₨${newAvg.toFixed(2)} × ${fmtN(newTotalQty)} shares`,'success');
-  closeModal('addMoreModal');
-};
-
-// =================== SELL ===================
-window.openSell = tid => {
-  const uid = document.getElementById('tradeClientSelect').value; if (!uid) return;
-  const t = allClients[uid]?.trades?.[tid]; if (!t) return;
-  activeTid = tid; activeUid = uid;
-  const curQty=parseFloat(t.buyQty||0), avgPrice=parseFloat(t.avgPrice||t.buyPrice||0);
-  const curRem=parseFloat(t.remaining||0), alreadySold=parseFloat(t.sellQty||0);
-  document.getElementById('sellInfoBox').innerHTML = `💼 <strong>${esc(t.stock)}</strong> — Selling from <strong>${fmtN(curRem)} remaining shares</strong> at avg cost ₨${fmt(avgPrice)}`;
-  document.getElementById('sl_curqty').value = curQty;
-  document.getElementById('sl_avgprice').value = avgPrice;
-  document.getElementById('sl_curremaining').value = curRem;
-  document.getElementById('sl_sellqty').value = '';
-  document.getElementById('sl_sellprice').value = '';
-  document.getElementById('sl_totalsold').value = '';
-  document.getElementById('sl_remaining').value = '';
-  document.getElementById('sl_booked').value = '';
-  document.getElementById('sl_thissale').value = '';
-  document.getElementById('sl_unrealized').value = t.unrealizedProfit||'';
-  document.getElementById('sellWarning').style.display='none';
-  openModal('sellModal');
-};
-window.calcSell = () => {
-  const curRem=n('sl_curremaining'), avgP=n('sl_avgprice');
-  const alreadySoldQty = n('sl_curqty') - curRem; // total bought minus current remaining = already sold
-  const t = allClients[activeUid]?.trades?.[activeTid];
-  const alreadySold = parseFloat(t?.sellQty||0);
-  const alreadyBooked = parseFloat(t?.bookedProfit||0);
-  const sellQty=n('sl_sellqty'), sellPrice=n('sl_sellprice');
-  const warn = document.getElementById('sellWarning');
-  if (sellQty > curRem) {
-    warn.style.display='';
-    warn.textContent=`⚠ Cannot sell ${fmtN(sellQty)} — only ${fmtN(curRem)} shares remaining!`;
-    return;
-  } else { warn.style.display='none'; }
-  const newTotalSold = alreadySold + sellQty;
-  const newRemaining = curRem - sellQty;
-  const thisSalePL = sellQty>0&&sellPrice>0 ? sellQty*(sellPrice-avgP) : 0;
-  const newBookedTotal = alreadyBooked + thisSalePL;
-  document.getElementById('sl_totalsold').value = newTotalSold;
-  document.getElementById('sl_remaining').value = newRemaining;
-  document.getElementById('sl_booked').value = newBookedTotal.toFixed(2);
-  document.getElementById('sl_thissale').value = thisSalePL.toFixed(2);
-};
-window.saveSell = async () => {
-  if (!activeTid||!activeUid) return;
-  const sellQty=n('sl_sellqty'), sellPrice=n('sl_sellprice');
-  if (!sellQty||!sellPrice) { showToast('Enter sell quantity and price','error'); return; }
-  const curRem = n('sl_curremaining');
-  if (sellQty > curRem) { showToast('Cannot sell more than remaining quantity!','error'); return; }
-  const t = allClients[activeUid].trades[activeTid];
-  const alreadySold = parseFloat(t.sellQty||0);
-  const alreadyBooked = parseFloat(t.bookedProfit||0);
-  const avgP = parseFloat(t.avgPrice||t.buyPrice||0);
-  const thisSalePL = sellQty*(sellPrice-avgP);
-  const newTotalSold = alreadySold+sellQty;
-  const newRemaining = curRem-sellQty;
-  const newBookedTotal = alreadyBooked+thisSalePL;
-  await update(ref(db,`clients/${activeUid}/trades/${activeTid}`), {
-    sellQty: newTotalSold,
-    sellPrice: sellPrice, // last sell price
-    remaining: newRemaining,
-    bookedProfit: parseFloat(newBookedTotal.toFixed(2)),
-    unrealizedProfit: n('sl_unrealized'),
-    updatedAt: new Date().toISOString()
-  });
-  showToast(`Sale recorded! ${fmtN(newRemaining)} shares remaining. P&L: ₨${fmt(thisSalePL)}`,'success');
-  closeModal('sellModal');
-};
-
-// =================== EDIT TRADE ===================
-window.openEditTrade = tid => {
-  const uid = document.getElementById('tradeClientSelect').value; if (!uid) return;
-  const t = allClients[uid]?.trades?.[tid]; if (!t) return;
-  activeTid = tid; activeUid = uid;
-  document.getElementById('et_date').value = t.date||'';
-  document.getElementById('et_stock').value = t.stock||'';
-  document.getElementById('et_buyqty').value = t.buyQty||'';
-  document.getElementById('et_avgprice').value = t.avgPrice||t.buyPrice||'';
-  document.getElementById('et_sellqty').value = t.sellQty||'';
-  document.getElementById('et_sellprice').value = t.sellPrice||'';
-  document.getElementById('et_remaining').value = t.remaining||'';
-  document.getElementById('et_booked').value = t.bookedProfit||'';
-  document.getElementById('et_unrealized').value = t.unrealizedProfit||'';
-  document.getElementById('et_notes').value = t.notes||'';
-  openModal('editTradeModal');
-};
-window.calcEdit = () => {
-  const bq=n('et_buyqty'), avgP=n('et_avgprice'), sq=n('et_sellqty'), sp=n('et_sellprice');
-  document.getElementById('et_remaining').value = Math.max(bq-sq,0)||'';
-  document.getElementById('et_booked').value = sq>0&&sp>0&&avgP>0?(sq*(sp-avgP)).toFixed(2):'';
-};
-window.saveEditTrade = async () => {
-  if (!activeTid||!activeUid) return;
-  const bq=n('et_buyqty'), avgP=n('et_avgprice'), sq=n('et_sellqty'), sp=n('et_sellprice');
-  await update(ref(db,`clients/${activeUid}/trades/${activeTid}`), {
-    date:v('et_date'), stock:v('et_stock'), buyQty:bq, avgPrice:avgP, buyPrice:avgP,
-    sellQty:sq, sellPrice:sp,
-    remaining:Math.max(bq-sq,0),
-    bookedProfit:sq>0&&sp>0&&avgP>0?parseFloat((sq*(sp-avgP)).toFixed(2)):0,
-    unrealizedProfit:n('et_unrealized'),
-    notes:v('et_notes'),
-    updatedAt:new Date().toISOString()
-  });
-  showToast('Trade updated!','success');
-  closeModal('editTradeModal');
-};
-
-// =================== DELETE TRADE ===================
-window.deleteTrade = async tid => {
-  const uid = document.getElementById('tradeClientSelect').value;
-  if (!uid||!confirm('Delete this trade entry?')) return;
-  await remove(ref(db,`clients/${uid}/trades/${tid}`));
-  showToast('Trade deleted','info');
-};
-
-// =================== AGREEMENTS ===================
-window.loadAgreementPreview = () => {
-  const uid=document.getElementById('agreeClientSelect').value;
-  const area=document.getElementById('agreementArea'), us=document.getElementById('uploadSection');
-  if (!uid) { area.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Select a client</div>'; us.style.display='none'; return; }
-  const c=allClients[uid]; if(!c) return;
-  us.style.display='';
-  const today=new Date().toLocaleDateString('en-PK',{year:'numeric',month:'long',day:'numeric'});
-  area.innerHTML=`
-    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-      <button class="btn btn-accent btn-sm" onclick="printAgreement()">🖨 Print</button>
-      <button class="btn btn-outline btn-sm" onclick="downloadAgreement()">⬇ Download</button>
-      ${c.agreementURL?`<a href="${c.agreementURL}" target="_blank" class="btn btn-success btn-sm">📎 View Signed</a>`:''}
-    </div>
-    <div class="agreement-preview" id="agreementDoc">
-      <h2>INVESTMENT MANAGEMENT AGREEMENT</h2>
-      <h4>Trade with Afrasiab — Client Portfolio Agreement</h4>
-      <p>This Agreement is entered into as of <strong>${today}</strong>, between:</p><br>
-      <table>
-        <tr><td><strong>Manager:</strong></td><td>Afrasiab (Trade with Afrasiab)</td></tr>
-        <tr><td><strong>Client Name:</strong></td><td>${esc(c.name)}</td></tr>
-        <tr><td><strong>Account No:</strong></td><td>${esc(c.accno)}</td></tr>
-        <tr><td><strong>CNIC:</strong></td><td>${esc(c.cnic||'N/A')}</td></tr>
-        <tr><td><strong>Address:</strong></td><td>${esc(c.address||'N/A')}</td></tr>
-        <tr><td><strong>Phone:</strong></td><td>${esc(c.phone||'N/A')}</td></tr>
-        <tr><td><strong>Trading Type:</strong></td><td>${esc(c.type)}</td></tr>
-        <tr><td><strong>Profit Sharing:</strong></td><td>${esc(c.profitShare)} on all net profits</td></tr>
-      </table>
-      <p><strong>1. Services:</strong> The Manager agrees to provide ${esc(c.type)} services for the Client.</p>
-      <p><strong>2. Profit Sharing:</strong> The Manager shall receive ${esc(c.profitShare)} of net profits. Losses shall not be borne by the Manager unless due to negligence.</p>
-      <p><strong>3. Client Rights:</strong> The Client retains full ownership of funds and may withdraw at any time with 3 business days notice.</p>
-      <p><strong>4. Reporting:</strong> The Manager will provide real-time access to the Client Portal for trade monitoring.</p>
-      <p><strong>5. Confidentiality:</strong> Both parties agree to keep all financial information confidential.</p>
-      <p><strong>6. Governing Law:</strong> This agreement shall be governed by the laws of the Islamic Republic of Pakistan.</p>
-      <div class="sig-block">
-        <div><div class="sig-line">Afrasiab<br>Fund Manager, Trade with Afrasiab<br>Date: ___________</div></div>
-        <div><div class="sig-line">${esc(c.name)}<br>Client<br>Date: ___________</div></div>
+  // Mobile cards
+  document.getElementById('mobileTradesBody').innerHTML=entries.map(([tid,t])=>{
+    const bp=parseFloat(t.bookedProfit||0),up=parseFloat(t.unrealizedProfit||0);
+    const avgP=parseFloat(t.avgPrice||t.buyPrice||0);
+    const rem=parseFloat(t.remaining||0);
+    return `<div class="trade-card">
+      <div class="tc-header">
+        <div>
+          <div class="tc-stock">${esc(t.stock||'—')}</div>
+          <div class="tc-date">${esc(t.date||'—')}</div>
+        </div>
+        <span class="badge ${t.isAverage?'badge-warn':'badge-blue'}">${t.isAverage?'Averaged':'New'}</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-row"><span class="tc-lbl">Total Qty</span><span class="tc-val">${fmtN(t.buyQty||0)}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Avg Price</span><span class="tc-val">₨${fmt(avgP)}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Sold Qty</span><span class="tc-val">${fmtN(t.sellQty||0)}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Sell Price</span><span class="tc-val">${parseFloat(t.sellPrice||0)>0?'₨'+fmt(t.sellPrice):'—'}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Remaining</span><span class="tc-val" style="${rem>0?'color:var(--accent3);font-weight:600':'color:var(--text3)'}">${rem>0?fmtN(rem):'Closed'}</span></div>
+        ${t.notes?`<div style="margin-top:6px;font-size:11px;color:var(--text3);font-style:italic">${esc(t.notes)}</div>`:''}
+      </div>
+      <div class="tc-footer">
+        <div class="tc-pstat">
+          <div class="tc-plbl">Booked P&L</div>
+          <div class="tc-pval ${bp>0?'profit-pos':bp<0?'profit-neg':'profit-zero'}">${bp>=0?'+':''}₨${fmtShort(bp)}</div>
+        </div>
+        <div class="tc-pstat">
+          <div class="tc-plbl">Unrealized P&L</div>
+          <div class="tc-pval ${up>0?'profit-pos':up<0?'profit-neg':'profit-zero'}">${up>=0?'+':''}₨${fmtShort(up)}</div>
+        </div>
       </div>
     </div>`;
-  if(c.agreementURL) document.getElementById('uploadedAgreementInfo').innerHTML=`<div class="badge badge-green" style="padding:8px 12px">✓ Signed agreement on file</div>`;
-};
-window.printAgreement = () => {
-  const w=window.open('','_blank');
-  w.document.write(`<html><head><title>Agreement</title><style>body{font-family:sans-serif;padding:40px}table{border-collapse:collapse;width:100%}td{padding:6px 12px;border:1px solid #ddd}.sig-block{display:flex;gap:60px;margin-top:40px}.sig-line{border-top:1px solid #333;padding-top:6px;font-size:12px;color:#555}</style></head><body>${document.getElementById('agreementDoc').outerHTML}</body></html>`);
-  w.document.close(); w.print();
-};
-window.downloadAgreement = () => {
-  const blob=new Blob([`<html><body style="font-family:sans-serif;padding:40px">${document.getElementById('agreementDoc').innerHTML}</body></html>`],{type:'text/html'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='agreement.html'; a.click();
-};
-window.uploadAgreement = async input => {
-  const uid=document.getElementById('agreeClientSelect').value; if(!uid||!input.files[0]) return;
-  showToast('Uploading...','info');
-  try {
-    const sr=sRef(storage,`agreements/${uid}/${input.files[0].name}`);
-    await uploadBytes(sr,input.files[0]);
-    const url=await getDownloadURL(sr);
-    await update(ref(db,'clients/'+uid),{agreementURL:url});
-    showToast('Agreement uploaded!','success');
-    document.getElementById('uploadedAgreementInfo').innerHTML=`<div class="badge badge-green" style="padding:8px 12px">✓ Uploaded: ${input.files[0].name}</div>`;
-  } catch(e) { showToast('Upload failed: '+e.message,'error'); }
+  }).join('');
+
+  // Summary row
+  const net=tb+tu;
+  document.getElementById('sumCount').textContent=entries.length;
+  setSumEl('sumBooked',tb);
+  setSumEl('sumUnrealized',tu);
+  setSumEl('sumNet',net);
+  document.getElementById('summaryRow').style.display='flex';
+}
+
+function setSumEl(id,val){
+  const el=document.getElementById(id);
+  el.textContent=(val>=0?'+':'')+'₨'+fmt(val);
+  el.className='sum-val '+(val>=0?'profit-pos':'profit-neg');
+}
+
+window.filterTrades=(filter,btn)=>{
+  currentFilter=filter;
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTrades(allTrades);
 };
 
-// =================== HELPERS ===================
-window.openModal = id => document.getElementById(id).classList.add('open');
-window.closeModal = id => document.getElementById(id).classList.remove('open');
-function showToast(msg,type='info') {
-  const el=document.createElement('div'); el.className=`toast ${type}`;
-  el.innerHTML=`<span>${type==='success'?'✓':type==='error'?'✗':'ℹ'}</span> ${msg}`;
-  document.getElementById('toastContainer').appendChild(el);
-  setTimeout(()=>el.remove(),4000);
-}
-function v(id){return document.getElementById(id)?.value?.trim()||'';}
-function n(id){return parseFloat(document.getElementById(id)?.value||0)||0;}
+// ── HELPERS ──
+function initials(name){return(name||'').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?';}
 function tbadge(t){return t==='Futures Trading'?'badge-purple':t==='Equity Trading'?'badge-green':'badge-blue';}
 function fmt(n){return parseFloat(n||0).toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fmtN(n){return parseFloat(n||0).toLocaleString('en-PK',{maximumFractionDigits:0});}
+function fmtShort(n){
+  const v=parseFloat(n||0);
+  if(Math.abs(v)>=1000000) return (v/1000000).toFixed(1)+'M';
+  if(Math.abs(v)>=1000) return (v/1000).toFixed(1)+'K';
+  return v.toFixed(0);
+}
 function esc(s){if(!s&&s!==0)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function showToast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.getElementById('toastC').appendChild(el);setTimeout(()=>el.remove(),3500);}
 </script>
 </body>
 </html>
